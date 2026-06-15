@@ -1,14 +1,24 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import { Button } from "./components/ui/button";
-import { ModeToggle } from "./components/mode-toggle";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeProvider } from "./components/theme-provider";
 
-function App() {
+export default function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Button>Hello Voyageur</Button>
-      <ModeToggle />
+    <ThemeProvider>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width": "calc(var(--spacing) * 72)",
+            "--header-height": "calc(var(--spacing) * 12)",
+          } as React.CSSProperties
+        }
+      >
+        <AppSidebar />
+        <SidebarInset>
+          <SiteHeader />
+        </SidebarInset>
+      </SidebarProvider>
     </ThemeProvider>
   );
 }
-
-export default App;
