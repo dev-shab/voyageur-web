@@ -1,5 +1,7 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Separator } from "@/components/ui/separator";
+import CreateTrip from "@/components/create-trip";
 
 export function SiteHeader() {
   return (
@@ -9,6 +11,8 @@ export function SiteHeader() {
         <div className="ml-auto flex items-center gap-2">
           <ModeToggle />
         </div>
+        <Separator orientation="vertical" />
+        <CreateTrip />
       </div>
     </header>
   );
