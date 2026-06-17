@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import TripsList from "./pages/TripsList";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ export default function App() {
           <AppSidebar />
           <SidebarInset>
             <SiteHeader />
+            <TripsList />
           </SidebarInset>
         </SidebarProvider>
       </ThemeProvider>

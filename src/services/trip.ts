@@ -14,6 +14,14 @@ export const createTrip = async ({
   notes,
 }: Trip) => {
   try {
+    const { data: image } = await axios.get(
+      `https://api.unsplash.com/photos/random?query=${destination}&orientation=squarish`,
+      {
+        headers: {
+          Authorization: `Client-ID ${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`,
+        },
+      },
+    );
     const { data: response } = await axios.post(`${API_BASE_URL}/trips`, {
       title,
       destination,
@@ -24,7 +32,18 @@ export const createTrip = async ({
       status,
       budget,
       notes,
+      imageUrl: image.urls.thumb,
     });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchTrips = async () => {
+  try {
+    const { data: response } = await axios.get(`${API_BASE_URL}/trips`);
     return response.data;
   } catch (error) {
     console.error(error);
