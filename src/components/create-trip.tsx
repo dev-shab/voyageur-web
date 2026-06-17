@@ -1,9 +1,8 @@
 import { CalendarIcon, DollarSign, Plus } from "lucide-react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { useState } from "react";
 import {
   Sheet,
   SheetClose,
@@ -39,9 +38,14 @@ import {
 } from "@/components/ui/input-group";
 import type { Trip } from "@/lib/types";
 import * as tripService from "@/services/trip";
+import { useDispatch, useSelector } from "react-redux";
+import { close, open } from "@/slices/createTrip";
 
 const CreateTrip = () => {
-  const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
+  const { createTrip: openState } = useSelector((store) => store.createTrip);
+  const dispatch = useDispatch();
+
   const { register, handleSubmit, watch, control, reset } = useForm<Trip>({
     defaultValues: {
       category: "LEISURE",
@@ -58,8 +62,11 @@ const CreateTrip = () => {
         notes: "",
         budget: null,
       });
+      queryClient.invalidateQueries({
+        queryKey: ["trips"],
+      });
       toast.success("Trip created");
-      setOpen(false);
+      dispatch(close());
     },
     onError: () => toast.error("Something went wrong - please try again"),
   });
@@ -67,9 +74,9 @@ const CreateTrip = () => {
     await mutation.mutateAsync(data);
   };
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={openState}>
       <SheetTrigger asChild>
-        <Button>
+        <Button onClick={() => dispatch(open())}>
           <Plus />
           New trip
         </Button>
@@ -284,7 +291,9 @@ const CreateTrip = () => {
               Create Trip
             </Button>
             <SheetClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button onClick={() => dispatch(close())} variant="outline">
+                Cancel
+              </Button>
             </SheetClose>
           </SheetFooter>
         </SheetContent>

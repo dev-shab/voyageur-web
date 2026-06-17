@@ -1,4 +1,5 @@
 export interface Trip {
+  imageUrl?: string;
   title: string;
   destination: string;
   country: string;
